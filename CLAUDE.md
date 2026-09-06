@@ -62,7 +62,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 開発フロー・ルール
 
-- ブランチ運用：`main` への直接コミット・プッシュを禁止する（ドキュメントのみの変更でも例外なし）。必ず `git checkout -b <branch>` でブランチを切り、`gh pr create` でPRを作成する。
+- ブランチ運用：`Assets/**` の変更は必ずPRを作成する（`main` への直接コミット・プッシュを禁止）。`Assets/**` 以外（`CLAUDE.md`・`requirements.md`・`DOCS/` 等のドキュメント）は `main` への直接pushを許可する。
 - コミット前に security review、マージ前に reviewer と pr-checker を通す（フックはこのリポジトリをプロジェクトディレクトリにしたセッションでのみ発火する）。
 - 参照する共有チェックリスト：`.claude/OWASP10.md`・`.claude/QC10.md`・`.claude/CC.md`・`DOCS/CRAP.md`・`DOCS/TM.md`（ローカルのみ配置。publicリポジトリのため `.claude/*` は `.gitignore` で除外されコミットされない）。
 - リリースフロー（デモ版のため簡略化）：`issue > setting & coding > security review > add, commit, push > reviewer & pr-checker > merge > user test` のみ。code-review・audit・security-gate・正式release・reportは省略してよい。
