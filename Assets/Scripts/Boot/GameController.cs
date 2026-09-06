@@ -58,6 +58,7 @@ namespace SukoyakaBuddy.Boot
 
             BuildLayout(root);
             bool isNewGame = LoadGame();
+            _inputForm.ResetToDefault(_character.DayNo);
 
             _buddyView.SetMood(Mood.Normal, isNewGame ? GreetingNewGame : GreetingContinue);
             _state = GameState.Input;
@@ -205,7 +206,6 @@ namespace SukoyakaBuddy.Boot
             SetInteractable(false);
 
             var raw = _inputForm.Read();
-            raw.DayNo = _character.DayNo;
             var normalized = InputNormalizer.Normalize(raw, _character.DayNo);
             _inputForm.Write(normalized.CorrectedInput);
 
@@ -250,7 +250,7 @@ namespace SukoyakaBuddy.Boot
             }
 
             RefreshAllViews();
-            _inputForm.ResetToDefault();
+            _inputForm.ResetToDefault(_character.DayNo);
             _state = GameState.Input;
             SetInteractable(true);
         }
@@ -299,7 +299,7 @@ namespace SukoyakaBuddy.Boot
             PlayerPrefs.DeleteAll();
             _state = GameState.Loading;
             LoadGame();
-            _inputForm.ResetToDefault();
+            _inputForm.ResetToDefault(_character.DayNo);
             _buddyView.SetMood(Mood.Normal, GreetingNewGame);
             _state = GameState.Input;
             SetInteractable(true);

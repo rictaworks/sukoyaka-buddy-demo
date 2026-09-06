@@ -178,6 +178,7 @@ namespace SukoyakaBuddy.Persistence
                 if (!int.TryParse(fields[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int exercise)) return false;
                 if (!int.TryParse(fields[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out int sleep)) return false;
                 if (!int.TryParse(fields[3], NumberStyles.Integer, CultureInfo.InvariantCulture, out int meal)) return false;
+                if (dayNo < 1 || !InRange(exercise) || !InRange(sleep) || !InRange(meal)) return false;
                 history.Add(new DayRecord(dayNo, exercise, sleep, meal));
             }
             return true;

@@ -56,6 +56,7 @@ namespace SukoyakaBuddy.View
         private readonly MealRow _lunchRow = new MealRow();
         private readonly MealRow _dinnerRow = new MealRow();
         private readonly OptionGroup<int> _snackGroup = new OptionGroup<int>();
+        private int _dayNo;
 
         public void Build(Transform parent, UiTheme theme)
         {
@@ -92,12 +93,13 @@ namespace SukoyakaBuddy.View
                 Lunch = _lunchRow.Read(),
                 Dinner = _dinnerRow.Read(),
                 Snacks = _snackGroup.Selected,
-                DayNo = 0
+                DayNo = _dayNo
             };
         }
 
         public void Write(DailyInput input)
         {
+            _dayNo = input.DayNo;
             _exerciseField.SetValue(input.ExerciseMinutes);
             _intensityGroup.Select(input.Intensity, notify: false);
             _sleepField.SetValue(input.SleepHours);
@@ -107,7 +109,9 @@ namespace SukoyakaBuddy.View
             _snackGroup.Select(input.Snacks, notify: false);
         }
 
-        public void ResetToDefault() => Write(DailyInput.Default(0));
+        /// <summary>フォームを既定値に戻し、この仮想日番号を記憶する。以後Read()はこの値をDailyInput.DayNoとして返す
+        /// （二重適用防止をGameController側の再代入に頼らず、フォーム自身が持つ値で行うため。requirements.md 12.2節）。</summary>
+        public void ResetToDefault(int dayNo) => Write(DailyInput.Default(dayNo));
 
         public void SetEnabled(bool enabled)
         {

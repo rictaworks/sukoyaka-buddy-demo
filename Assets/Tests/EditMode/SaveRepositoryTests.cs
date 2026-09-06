@@ -91,5 +91,19 @@ namespace SukoyakaBuddy.Tests.EditMode
             var loaded = repo.Load("2026-09-06", out _);
             Assert.IsFalse(loaded.IsSick, "つかれの値を正として体調不良の有無を直す");
         }
+
+        [Test]
+        public void Load_WithOutOfRangeHistoryValue_ReturnsNewEgg()
+        {
+            var repo = new SaveRepository();
+            var character = Character.NewEgg();
+            character.History.Add(new DayRecord(1, 50, 50, 50));
+            repo.Save(character, "2026-09-06");
+            // 履歴の1項目だけ範囲外の値へ書き換える（破損の再現）。
+            PlayerPrefs.SetString("history", "1,999,50,50");
+
+            var loaded = repo.Load("2026-09-06", out bool isNewGame);
+            Assert.IsTrue(isNewGame, "履歴の値も型・範囲チェックの対象とする");
+        }
     }
 }
